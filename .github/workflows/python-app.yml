@@ -36,6 +36,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest -k 'test_home_pom' dsl\ui\pages\totaljobs\home.py
-        pytest -k 'test_search_results_pom' dsl\ui\pages\totaljobs\search_results.py
+        pytest -k 'test_home_pom' dsl/ui/pages/totaljobs/home.py
+        pytest -k 'test_search_results_pom' dsl/ui/pages/totaljobs/search_results.py
    
