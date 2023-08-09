@@ -1,0 +1,5 @@
+pages:
+  total_jobs:
+    home: https://www.totaljobs.com
+  indeed:
+    home: https://uk.indeed.com
