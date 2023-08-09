@@ -1,5 +1,18 @@
 locators:
   total_jobs:
     home_page:
+      job_title: '//*[@placeholder="Job title, skill or company"]'
+      location: '//*[@placeholder="Town, city or postcode"]'
+      accept_cookies: '//*[@id="ccmgt_explicit_accept"]'
+    results_page:
+      job_cards: '//*[@class="res-ihwgmh"]'
+    job_page:
+      job_title: '//*[@class="row title"]'
+      location: '//*[@class="col-xs-12 col-sm-7 travelTime-locationText"]'
+      salary: '//*[@class="location-salary"]'
+      role_type: '//*[@class="job-type icon"]'
+      date_posted: '//*[@class="date-posted icon"]'
+      job_description: '//*[@class="job-description"]'
+      employer: '//*[@class="company icon"]'
   indeed:
     home_page:
