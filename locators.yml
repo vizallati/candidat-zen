@@ -14,5 +14,10 @@ locators:
       date_posted: '//*[@class="date-posted icon"]'
       job_description: '//*[@class="job-description"]'
       employer: '//*[@class="company icon"]'
+    application_page:
+      email_address: '//*[@id="txtEmail"]'
+      password: '//*[@id="txtPassword"]'
+      apply_with_cv: '//*[@id="content_applicationPath_1_button"]'
+      upload_cv: '//*[@id="btnCVUpload"]'
   indeed:
     home_page:

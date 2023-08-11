@@ -5,7 +5,8 @@ yaml_files = ['settings.yml', 'locators.yml']
 
 
 class Settings:
-    pass
+    locators = None
+    page = None
 
 
 def get_absolute_path(file_name):
