@@ -21,6 +21,7 @@ class BaseActions:
             raise ValueError('Invalid element')
 
     def send_text(self, locator, text):
+        self.page.locator(locator).clear()
         self.page.fill(locator, text)
 
     def get_text(self, locator):

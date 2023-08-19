@@ -21,3 +21,14 @@ locators:
       upload_cv: '//*[@id="btnCVUpload"]'
   indeed:
     home_page:
+      job_title: '//*[@id="text-input-what"]'
+      location: '//*[@id="text-input-where"]'
+    results_page:
+      job_cards: '//*[@class="css-5lfssm eu4oa1w0"]'
+    job_page:
+      job_title: '//*[@class="jobsearch-JobInfoHeader-title css-161nklr e1tiznh50"]'
+      location: '//*[@data-testid="inlineHeader-companyLocation"]/div'
+      salary: '//*[@id="salaryInfoAndJobType"]/span[1]'
+      role_type: '//*[@id="salaryInfoAndJobType"]/span[2]'
+      job_description: '//*[@id="jobDescriptionText"]'
+      employer: '//*[@data-testid="inlineHeader-companyName"]'
