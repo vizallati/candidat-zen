@@ -21,6 +21,6 @@ def test_home_pom():
         load_yaml(file)
     settings.page = initiate_browser()
     BaseActions(settings.page)
-    total_home = HomePage()
-    total_home.search_for_job(position='cloud engineer', location='Bedworth')
+    indeed_home = HomePage()
+    indeed_home.search_for_job(position='cloud engineer', location='Bedworth')
 
