@@ -43,6 +43,6 @@ jobs:
       run: |
         pytest -k 'test_home_pom' dsl/ui/pages/totaljobs/home.py
         pytest -k 'test_search_results_pom' dsl/ui/pages/totaljobs/search_results.py
-#        pytest -k 'test_home_pom' dsl/ui/pages/indeed/home.py
-#        pytest -k 'test_search_results_pom' dsl/ui/pages/indeed/search_results.py
+        pytest -k 'test_home_pom' dsl/ui/pages/indeed/home.py
+        pytest -k 'test_search_results_pom' dsl/ui/pages/indeed/search_results.py
    
