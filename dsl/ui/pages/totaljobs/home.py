@@ -12,7 +12,7 @@ class HomePage(BaseActions):
         self.navigate_to_page(url=settings.pages['total_jobs']['home'])
         try:
             self.click_on_element(locator=self.locators['accept_cookies'])
-        except TimeoutError:
+        except Exception:
             print('No cookies found')
         self.send_text(self.locators['job_title'], position)
         self.send_text(self.locators['location'], location)
