@@ -10,7 +10,10 @@ class HomePage(BaseActions):
 
     def search_for_job(self, position, location):
         self.navigate_to_page(url=settings.pages['total_jobs']['home'])
-        self.click_on_element(locator=self.locators['accept_cookies'])
+        try:
+            self.click_on_element(locator=self.locators['accept_cookies'])
+        except TimeoutError:
+            print('No cookies found')
         self.send_text(self.locators['job_title'], position)
         self.send_text(self.locators['location'], location)
         self.click_on_element(button='search')
