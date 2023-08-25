@@ -14,13 +14,3 @@ class HomePage(BaseActions):
         self.send_text(self.locators['location'], location)
         self.click_on_element(button='find jobs')
 
-
-def test_home_pom():
-    for yaml_file in yaml_files:
-        file = get_absolute_path(yaml_file)
-        load_yaml(file)
-    settings.page = initiate_browser()
-    BaseActions(settings.page)
-    indeed_home = HomePage()
-    indeed_home.search_for_job(position='cloud engineer', location='Bedworth')
-

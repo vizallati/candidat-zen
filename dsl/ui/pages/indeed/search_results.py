@@ -11,15 +11,3 @@ class SearchResults(BaseActions):
 
     def wait_for_results(self):
         self.page.wait_for_selector(self.locators['job_cards'])
-
-
-def test_search_results_pom():
-    for yaml_file in yaml_files:
-        file = get_absolute_path(yaml_file)
-        load_yaml(file)
-    settings.page = initiate_browser()
-    BaseActions(settings.page)
-    indeed_home = HomePage()
-    search_results = SearchResults()
-    indeed_home.search_for_job(position='devops engineer', location='Birmingham')
-    search_results.wait_for_results()
