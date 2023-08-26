@@ -8,6 +8,6 @@ def initiate_browser():
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/69.0.3497.100 Safari/537.36"
     )
-    browser = p.chromium.launch(headless=True)
+    browser = p.chromium.launch(headless=False)
     page = browser.new_page(user_agent=ua)
     return page
