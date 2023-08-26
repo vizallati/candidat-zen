@@ -35,7 +35,7 @@ class BaseActions:
         self.page.go_back()
 
     def wait_for_locator(self, locator):
-        self.page.wait_for_selector(locator)
+        self.page.wait_for_selector(locator, timeout=12000)
 
     def file_chooser(self, path_to_file):
         # Todo refactor to take element to click on as param

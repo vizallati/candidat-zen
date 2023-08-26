@@ -1,0 +1,1 @@
+NEWLY_POSTED_STRING = 'Today'
