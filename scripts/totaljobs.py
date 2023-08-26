@@ -43,10 +43,27 @@ class Bot:
         else:
             print(f'Oops wrong job type:{settings.job.role_type}')
 
+    def __evaluate_job_salary(self):
+        minimum_salary = 1000  # should be accepted as env variable
+        matches = re.findall(r'£\d+', settings.job.salary)
+        if len(matches) >= 2:
+            actual_salary = eval(matches[1].replace('£', ''))
+            if actual_salary > minimum_salary:
+                settings.apply_for_job = True
+                print(f'Job salary: {settings.job.salary} meets requirements, proceed ...')
+            else:
+                settings.apply_for_job = False
+                print(f'Oops job salary: {settings.job.salary} does not meet requirements'
+                      f'(not greater than £{minimum_salary})')
+        else:
+            settings.apply_for_job = False
+            print(f'Oops job salary: {settings.job.salary} cannot be evaluated')
+
     def evaluate_job(self):
         settings.apply_for_job = False
         self.__evaluate_date_posted()
         self.__evaluate_job_type()
+        self.__evaluate_job_salary()
 
     def search_for_job(self, job_title, location):
         settings.total_home.navigate_to_page(settings.pages['total_jobs']['home'])
@@ -58,7 +75,6 @@ class Bot:
         all_jobs = settings.page.query_selector_all(settings.locators['total_jobs']['results_page']['job_cards'])
         for job_posting in all_jobs:
             job_posting.click()
-            settings.page.wait_for_load_state()
             self.evaluate_job()
             if not settings.apply_for_job:
                 print('Job posting is either too old or does not meet expectations of applicant')
@@ -82,4 +98,3 @@ if __name__ == "__main__":
     bot = Bot()
     bot.setup_browser()
     bot.search_for_job(job_title='devops engineer', location='London')
-    bot.evaluate_job()

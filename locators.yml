@@ -9,7 +9,7 @@ locators:
     job_page:
       job_title: '//*[@class="row title"]'
       location: '//*[@class="col-xs-12 col-sm-7 travelTime-locationText"]'
-      salary: '//*[@class="location-salary"]'
+      salary: '//*[@class="location-salary"]//*[contains(@class, "salary icon")]'
       role_type: '//*[@class="job-type icon"]'
       date_posted: '//*[@class="date-posted icon"]'
       job_description: '//*[@class="job-description"]'
