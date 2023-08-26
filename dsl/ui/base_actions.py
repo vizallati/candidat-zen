@@ -1,4 +1,6 @@
+import random
 import re
+import time
 from playwright.sync_api import Page
 from helpers.common import Settings as settings
 
@@ -6,9 +8,11 @@ from helpers.common import Settings as settings
 class BaseActions:
     def __init__(self, page: Page):
         self.page = page
+        self.sleep_durations = [1, 1.5, 2, 2.5, 3, 3.5]  # Todo: change duration to milliseconds
+        self.random_sleep = random.choice(self.sleep_durations)
 
     def navigate_to_page(self, url):
-        self.page.goto(url)
+        self.page.goto(url, timeout=50000)
 
     def click_on_element(self, **kwargs):
         if kwargs.get('button'):
@@ -29,6 +33,9 @@ class BaseActions:
 
     def previous_page(self):
         self.page.go_back()
+
+    def wait_for_locator(self, locator):
+        self.page.wait_for_selector(locator)
 
     def file_chooser(self, path_to_file):
         # Todo refactor to take element to click on as param
