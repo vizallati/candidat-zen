@@ -1,4 +1,4 @@
-from data.constants import NEWLY_POSTED_STRING
+from data.constants import NEWLY_POSTED_STRING, RECENTLY_POSTED_STRING
 from dsl.ui.base_actions import BaseActions
 from dsl.ui.pages.totaljobs.home import HomePage
 from dsl.ui.pages.totaljobs.job import Job
@@ -16,6 +16,7 @@ class Bot:
     REQUIRED_SKILLS_AND_EXP = ['python', 'github', 'docker', 'bash', 'powershell', 'terraform', 'jenkins']
     SKILL_MATCH_THRESHOLD = 80
     JOBS_LESS_THAN = 17
+    first_time_using_email = True
 
     def setup_browser(self):
         for yaml_file in yaml_files:
@@ -28,7 +29,7 @@ class Bot:
 
     def __evaluate_date_posted(self):
         settings.job = Job()
-        if settings.job.date_posted == NEWLY_POSTED_STRING:
+        if settings.job.date_posted == NEWLY_POSTED_STRING or RECENTLY_POSTED_STRING:
             settings.apply_for_job = True
             print('Job was recently posted, proceed ...')
         else:
@@ -64,7 +65,8 @@ class Bot:
             print(f'Oops job salary: {settings.job.salary} cannot be evaluated')
 
     def __evaluate_job_description(self):
-        count_present = sum(1 for element in self.REQUIRED_SKILLS_AND_EXP if element.lower() in settings.job.description.lower())
+        count_present = sum(
+            1 for element in self.REQUIRED_SKILLS_AND_EXP if element.lower() in settings.job.description.lower())
         percentage_present = math.ceil((count_present / len(self.REQUIRED_SKILLS_AND_EXP)) * 100)
         if percentage_present >= self.SKILL_MATCH_THRESHOLD:
             settings.apply_for_job = True
@@ -87,26 +89,47 @@ class Bot:
         settings.total_home.send_text(settings.locators['total_jobs']['home_page']['location'], location)
         settings.total_home.click_on_element(button='search')
         settings.search.wait_for_results()
-        all_jobs = settings.page.query_selector_all(settings.locators['total_jobs']['results_page']['job_cards'])
-        for job_posting in all_jobs:
-            job_posting.click()
-            self.evaluate_job()
-            if not settings.apply_for_job:
-                print('Job posting is either too old or does not meet expectations of applicant')
-                break
-            settings.search.click_on_element(button='Apply')
-            settings.search.wait_for_locator(settings.locators['total_jobs']['application_page']['email_address'])
+        jobs_to_apply = 0
+        while jobs_to_apply < 25:
+            all_jobs = settings.page.query_selector_all(settings.locators['total_jobs']['results_page']['job_cards'])
+            number_of_jobs = len(all_jobs)
+            results_url = settings.page.url
 
-            settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['email_address'],
-                                      text='emailaddressofbotapper@gmail.com')
-            settings.search.click_on_element(button='continue with email')
-            settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
-                                      text="HardtoguessP333")
-            settings.search.click_on_element(button='continue application')
-            #
-            # settings.search.click_on_element(
-            #     locator=settings.locators['total_jobs']['application_page']['apply_with_cv'])
-            # settings.search.file_chooser("")
+            for index in range(number_of_jobs):
+                all_jobs[index].click()
+                self.evaluate_job()
+
+                if not settings.apply_for_job:
+                    print('Job posting is either too old or does not meet expectations of applicant')
+                    settings.search.navigate_to_page(results_url)
+                    all_jobs = settings.page.query_selector_all(
+                        settings.locators['total_jobs']['results_page']['job_cards'])
+                    continue  # Continue to the next job posting
+
+                jobs_to_apply += 1
+                print(f'Jobs applied for {jobs_to_apply}')
+                settings.search.click_on_element(button='Apply')
+                settings.search.wait_for_locator(settings.locators['total_jobs']['application_page']['email_address'])
+
+                settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['email_address'],
+                                          text='')
+
+                if self.first_time_using_email:
+                    settings.search.click_on_element(button='continue with email')
+                    settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
+                                              text="")
+                    settings.search.click_on_element(button='continue application')
+                else:
+                    settings.search.click_on_element(button='continue with email')
+                    settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
+                                              text="")
+                    settings.search.click_on_element(button='continue without signing in')
+
+                settings.search.click_on_element(
+                    locator=settings.locators['total_jobs']['application_page']['apply_with_cv'])
+                settings.search.file_chooser(r'')
+                settings.search.navigate_to_page(results_url)
+                break  # Exit the loop after applying to one job
 
 
 if __name__ == "__main__":
