@@ -11,12 +11,18 @@ import math
 
 
 class Bot:
-    DESIRED_JOB_TYPE = 'Permanent'
-    MINIMUM_SALARY = 10000
-    REQUIRED_SKILLS_AND_EXP = ['python', 'github', 'docker', 'bash', 'powershell', 'terraform', 'jenkins']
-    SKILL_MATCH_THRESHOLD = 80
-    JOBS_LESS_THAN = 17
-    first_time_using_email = True
+    def __init__(self, job_type, minimum_salary, required_skills, match_threshold, date_posted,
+                 email, first_name, surname, password):
+        self.DESIRED_JOB_TYPE = job_type
+        self.MINIMUM_SALARY = minimum_salary
+        self.REQUIRED_SKILLS_AND_EXP = required_skills
+        self.SKILL_MATCH_THRESHOLD = match_threshold
+        self.JOBS_LESS_THAN = date_posted
+        self.first_time_using_email = True
+        self.email = email
+        self.first_name = first_name
+        self.sur_name = surname
+        self.password = password
 
     def setup_browser(self):
         for yaml_file in yaml_files:
@@ -112,33 +118,34 @@ class Bot:
                 settings.search.wait_for_locator(settings.locators['total_jobs']['application_page']['email_address'])
 
                 settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['email_address'],
-                                          text='')
+                                          text=self.email)
 
                 if self.first_time_using_email:
                     settings.search.click_on_element(button='continue with email')
                     settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
-                                              text="")
+                                              text=self.password)
                     settings.search.click_on_element(button='continue application')
                 else:
                     settings.search.click_on_element(button='continue with email')
                     settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
-                                              text='')
+                                              text=self.password)
                     settings.search.click_on_element(button='continue without signing in')
 
                 settings.search.click_on_element(
                     locator=settings.locators['total_jobs']['application_page']['apply_with_cv'])
                 settings.search.file_chooser(r'')
                 settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['first_name'],
-                                          text='first name')
+                                          text=self.first_name)
                 settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['sur_name'],
-                                          text='surname')
+                                          text=self.sur_name)
                 settings.search.select_option(locator=settings.locators['total_jobs']['application_page']['education'],
                                               option='University degree')  # Needs to be passed as param from ui
                 settings.search.send_text(
                     locator=settings.locators['total_jobs']['application_page']['most_recent_job'],
                     text='Intern')
-                settings.search.select_option(locator=settings.locators['total_jobs']['application_page']['most_recent_salary'],
-                                              option='26,000-27,999') # Need to look for a way to get this value by using salary expectations
+                settings.search.select_option(
+                    locator=settings.locators['total_jobs']['application_page']['most_recent_salary'],
+                    option='26,000-27,999')  # Need to look for a way to get this value by using salary expectations
                 settings.search.click_on_element(button='send application')
                 settings.search.navigate_to_page(results_url)
                 all_jobs = settings.page.query_selector_all(
@@ -147,6 +154,8 @@ class Bot:
 
 
 if __name__ == "__main__":
-    bot = Bot()
+    bot = Bot(job_type='Permanent', minimum_salary=10000,
+              required_skills=['python', 'github', 'docker', 'bash', 'powershell', 'terraform', 'jenkins'],
+              match_threshold=80, date_posted=17,email='',first_name='',surname='',password='')
     bot.setup_browser()
     bot.search_for_job(job_title='devops engineer', location='London')
