@@ -1,0 +1,91 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidat Zen</title>
+</head>
+<body>
+    <h1>Candidat Zen</h1>
+    <form id="scriptForm" enctype="multipart/form-data">
+        <label for="jobTitle">Job Title:</label>
+        <input type="text" id="jobTitle" name="jobTitle" value="DevOps Engineer">
+        <p>Enter the job title.</p><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="London">
+        <p>Enter the job location.</p><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="">
+        <p>Enter your first name.</p><br><br>
+
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname" value="">
+        <p>Enter your surname.</p><br><br>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="" placeholder="candidat@gmail.com">
+        <p>Enter email to be used in making applications.</p><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="">
+        <p>Enter your password.</p><br><br>
+
+        <label for="desiredJobType">Desired Job Type:</label>
+        <input type="text" id="desiredJobType" name="desiredJobType" value="Permanent">
+        <p>Enter the desired job type (e.g., Permanent, Contract, etc.).</p><br><br>
+
+        <label for="minimumSalary">Minimum Salary:</label>
+        <input type="number" id="minimumSalary" name="minimumSalary" value="10000">
+        <p>Enter the minimum salary amount.</p><br><br>
+
+        <label for="skillMatchThreshold">Skill Match Threshold:</label>
+        <input type="number" id="skillMatchThreshold" name="skillMatchThreshold" value="80">
+        <p>Enter the percentage threshold for matching skills and experience.</p><br><br>
+
+        <label for="jobsLessThan">Jobs Less Than:</label>
+        <input type="number" id="jobsLessThan" name="jobsLessThan" value="17">
+        <p>Enter the maximum number of days since job posting.</p><br><br>
+
+        <label for="skills">Skills:</label>
+        <input type="text" id="skills" name="skills" placeholder="python, github, docker, ..." style="width: 300px;">
+        <p>Enter skills and experience (comma-separated) required for the job.</p><br><br>
+
+        <!-- File Upload Input -->
+        <label for="cv">Upload CV (PDF):</label>
+        <input type="file" id="cv" name="cv" accept=".pdf">
+        <p>Upload your CV in PDF format.</p><br><br>
+
+        <button id="runButton" type="button">Apply for jobs</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const runButton = document.getElementById('runButton');
+        const resultDiv = document.getElementById('result');
+        const form = document.getElementById('scriptForm');
+
+        runButton.addEventListener('click', async () => {
+            resultDiv.innerText = 'Running...';
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch('http://127.0.0.1:5000/apply', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.result) {
+                    resultDiv.innerText = data.result;
+                } else {
+                    resultDiv.innerText = 'An error occurred.';
+                }
+            } catch (error) {
+                resultDiv.innerText = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
