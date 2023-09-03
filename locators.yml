@@ -19,6 +19,11 @@ locators:
       password: '//*[@id="txtPassword"]'
       apply_with_cv: '//*[@id="content_applicationPath_1_button"]'
       upload_cv: '//*[@id="btnCVUpload"]'
+      first_name: '//*[@id="txtFirstname"]'
+      sur_name: '//*[@id="txtSurname"]'
+      education: '//*[@id="ddlEducation"]'
+      most_recent_job: '//*[@id="txtCurrentJobTitle"]'
+      most_recent_salary: '//*[@id="ddlSalaryRange"]'
   indeed:
     home_page:
       job_title: '//*[@id="text-input-what"]'

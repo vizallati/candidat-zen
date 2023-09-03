@@ -122,14 +122,28 @@ class Bot:
                 else:
                     settings.search.click_on_element(button='continue with email')
                     settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['password'],
-                                              text="")
+                                              text='')
                     settings.search.click_on_element(button='continue without signing in')
 
                 settings.search.click_on_element(
                     locator=settings.locators['total_jobs']['application_page']['apply_with_cv'])
                 settings.search.file_chooser(r'')
+                settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['first_name'],
+                                          text='first name')
+                settings.search.send_text(locator=settings.locators['total_jobs']['application_page']['sur_name'],
+                                          text='surname')
+                settings.search.select_option(locator=settings.locators['total_jobs']['application_page']['education'],
+                                              option='University degree')  # Needs to be passed as param from ui
+                settings.search.send_text(
+                    locator=settings.locators['total_jobs']['application_page']['most_recent_job'],
+                    text='Intern')
+                settings.search.select_option(locator=settings.locators['total_jobs']['application_page']['most_recent_salary'],
+                                              option='26,000-27,999') # Need to look for a way to get this value by using salary expectations
+                settings.search.click_on_element(button='send application')
                 settings.search.navigate_to_page(results_url)
-                break  # Exit the loop after applying to one job
+                all_jobs = settings.page.query_selector_all(
+                    settings.locators['total_jobs']['results_page']['job_cards'])
+                continue
 
 
 if __name__ == "__main__":
