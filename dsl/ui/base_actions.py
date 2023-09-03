@@ -43,3 +43,6 @@ class BaseActions:
             self.click_on_element(locator=settings.locators['total_jobs']['application_page']['upload_cv'])
         file_chooser = fc_info.value
         file_chooser.set_files(path_to_file)
+
+    def select_option(self, locator, option):
+        self.page.locator(locator).select_option(option)
