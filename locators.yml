@@ -28,6 +28,8 @@ locators:
     home_page:
       job_title: '//*[@id="text-input-what"]'
       location: '//*[@id="text-input-where"]'
+      accept_cookies: '//*[@id="onetrust-accept-btn-handler"]'
+      close_pop_up: '//*[@class="icl-CloseButton icl-Card-close"]'
     results_page:
       job_cards: '//*[@class="css-5lfssm eu4oa1w0"]'
     job_page:

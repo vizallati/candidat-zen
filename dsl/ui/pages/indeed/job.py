@@ -1,5 +1,7 @@
+import re
 from dsl.ui.base_actions import BaseActions
 from helpers.common import Settings as settings
+from playwright._impl._api_types import TimeoutError
 
 
 class Job(BaseActions):
@@ -17,11 +19,17 @@ class Job(BaseActions):
 
     @property
     def salary(self):
-        return self.get_text(self.locators['salary'])
+        try:
+            return self.get_text(self.locators['salary'])
+        except TimeoutError:
+            return 'Not found'
 
     @property
     def role_type(self):
-        return self.get_text(self.locators['role_type'])
+        try:
+            return self.get_text(self.locators['role_type'])
+        except TimeoutError:
+            return 'Not found'
 
     @property
     def description(self):
@@ -30,3 +38,11 @@ class Job(BaseActions):
     @property
     def employer(self):
         return self.get_text(self.locators['employer'])
+
+    @property
+    def apply_on_company_site(self):
+        try:
+            self.page.get_by_role("button", name=re.compile('apply on company site', re.IGNORECASE))
+            return True
+        except TimeoutError:
+            return False
