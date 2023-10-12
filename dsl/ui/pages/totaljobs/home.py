@@ -1,3 +1,5 @@
+from loguru import logger
+
 from dsl.ui.base_actions import BaseActions
 from helpers.common import Settings as settings
 
@@ -12,7 +14,7 @@ class HomePage(BaseActions):
         try:
             self.click_on_element(locator=self.locators['accept_cookies'])
         except Exception:
-            print('No cookies found')
+            logger.info('No cookies found')
         self.send_text(self.locators['job_title'], position)
         self.send_text(self.locators['location'], location)
         self.click_on_element(button='search')
