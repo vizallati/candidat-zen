@@ -5,6 +5,7 @@ from dsl.ui.pages.indeed.search_results import SearchResults
 from helpers.common import yaml_files, get_absolute_path, load_yaml
 from helpers.ui_helpers import initiate_browser
 from helpers.common import Settings as settings
+from loguru import logger
 import re
 import math
 
@@ -22,6 +23,7 @@ class Bot:
         self.first_name = first_name
         self.sur_name = surname
         self.password = password
+        self.apply_for_job = 0
 
     def setup_browser(self):
         for yaml_file in yaml_files:
@@ -35,48 +37,43 @@ class Bot:
     def __evaluate_possibility_to_apply(self):
         settings.job = Job()
         if settings.job.apply_on_company_site:
-            settings.apply_for_job = False
-            print("Job cannot be made on indeed's website ...")
+            logger.info("Job cannot be made on indeed's website ...")
         else:
-            settings.apply_for_job = True
-            print("Job application can be be made on indeed's website, proceed ...")
+            self.apply_for_job += 1
+            logger.info("Job application can be be made on indeed's website, proceed ...")
 
     def __evaluate_job_type(self):
         settings.job = Job()
         if self.DESIRED_JOB_TYPE in settings.job.role_type:
-            settings.apply_for_job = True
-            print(f'Job type is {settings.job.role_type} as requested, proceed ...')
+            self.apply_for_job += 1
+            logger.info(f'Job type is {settings.job.role_type} as requested, proceed ...')
         else:
-            print(f'Oops wrong job type:{settings.job.role_type}')
+            logger.info(f'Oops wrong job type:{settings.job.role_type}')
 
     def __evaluate_job_salary(self):
         matches = re.findall(r'£\d+', settings.job.salary)
         if len(matches) >= 2:
             actual_salary = eval(matches[1].replace('£', ''))
             if actual_salary > self.MINIMUM_SALARY:
-                settings.apply_for_job = True
-                print(f'Job salary: {settings.job.salary} meets requirements, proceed ...')
+                self.apply_for_job += 1
+                logger.info(f'Job salary: {settings.job.salary} meets requirements, proceed ...')
             else:
-                settings.apply_for_job = False
-                print(f'Oops job salary: {settings.job.salary} does not meet requirements'
-                      f'(not greater than £{self.MINIMUM_SALARY})')
+                logger.info(f'Oops job salary: {settings.job.salary} does not meet requirements'
+                            f'(not greater than £{self.MINIMUM_SALARY})')
         else:
-            settings.apply_for_job = False
-            print(f'Oops job salary: {settings.job.salary} cannot be evaluated')
+            logger.info(f'Oops job salary: {settings.job.salary} cannot be evaluated')
 
     def __evaluate_job_description(self):
         count_present = sum(
             1 for element in self.REQUIRED_SKILLS_AND_EXP if element.lower() in settings.job.description.lower())
         percentage_present = math.ceil((count_present / len(self.REQUIRED_SKILLS_AND_EXP)) * 100)
         if percentage_present >= self.SKILL_MATCH_THRESHOLD:
-            settings.apply_for_job = True
-            print(f"{percentage_present}% of your skills and experience match this job posting, proceed...")
+            self.apply_for_job += 1
+            logger.info(f"{percentage_present}% of your skills and experience match this job posting, proceed...")
         else:
-            settings.apply_for_job = False
-            print(f"Opps! You meet only {percentage_present}% of the skills required for this position")
+            logger.info(f"Opps! You meet only {percentage_present}% of the skills required for this position")
 
     def evaluate_job(self):
-        settings.apply_for_job = False
         self.__evaluate_possibility_to_apply()
         self.__evaluate_job_type()
         self.__evaluate_job_salary()
@@ -100,26 +97,28 @@ class Bot:
                 all_jobs[index].click()
                 self.evaluate_job()
 
-                if not settings.apply_for_job:
-                    print('Job posting is either too old or does not meet expectations of applicant')
+                if self.apply_for_job < 4:
+                    logger.info('Job posting is either too old or does not meet expectations of applicant')
                     settings.search.navigate_to_page(results_url)
                     all_jobs = settings.page.query_selector_all(
                         settings.locators['indeed']['results_page']['job_cards'])
+                    self.apply_for_job = 0  # reset value to zero before continuing iteration
                     continue  # Continue to the next job posting
 
                 jobs_to_apply += 1
-                print(f'Jobs applied for {jobs_to_apply}')
+                logger.info(f'Jobs applied for {jobs_to_apply}')
                 settings.search.click_on_element(button='Apply')
 
                 settings.search.navigate_to_page(results_url)
                 all_jobs = settings.page.query_selector_all(
                     settings.locators['indeed']['results_page']['job_cards'])
+                self.apply_for_job = 0
                 continue
 
 
 if __name__ == "__main__":
-    bot = Bot(job_type='Permanent', minimum_salary=10000,
+    bot = Bot(job_type='Permanent', minimum_salary=10000000,
               required_skills=['python', 'github', 'docker', 'bash', 'powershell', 'terraform', 'jenkins'],
-              match_threshold=80, date_posted=17,email='',first_name='',surname='',password='')
+              match_threshold=80, date_posted=17, email='', first_name='', surname='', password='')
     bot.setup_browser()
     bot.search_for_job(job_title='devops engineer', location='London')

@@ -5,7 +5,7 @@ locators:
       location: '//*[@placeholder="Town, city or postcode"]'
       accept_cookies: '//*[@id="ccmgt_explicit_accept"]'
     results_page:
-      job_cards: '//*[@class="res-ihwgmh"]'
+      job_cards: '//*[@class="res-1tps163"]'
     job_page:
       job_title: '//*[@class="row title"]'
       location: '//*[@class="col-xs-12 col-sm-7 travelTime-locationText"]'
