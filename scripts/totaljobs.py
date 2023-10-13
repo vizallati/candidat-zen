@@ -112,6 +112,7 @@ class Bot:
                     continue  # Continue to the next job posting
 
                 jobs_to_apply += 1
+                settings.page.screenshot(path="static/images/screenshot_jobA.png")
                 logger.info(f'Jobs applied for {jobs_to_apply}')
                 settings.search.click_on_element(button='Apply')
                 settings.search.wait_for_locator(settings.locators['total_jobs']['application_page']['email_address'])

@@ -12,6 +12,6 @@ def initiate_browser():
     ]
     ua = user_agent_strings[random.randint(0, len(user_agent_strings) - 1)]
     # Switched browser to firefox, because chromium does not support use of proxy server
-    browser = p.firefox.launch(headless=True)
-    page = browser.new_page(user_agent=ua, proxy={"server": ""})
+    browser = p.firefox.launch(headless=False)
+    page = browser.new_page(user_agent=ua)
     return page

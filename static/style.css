@@ -58,3 +58,28 @@ button:hover {
     font-weight: bold;
     display: none; /* Hide the result initially */
 }
+/* Define styles for the dashboard container */
+        .dashboard-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Define styles for status updates */
+        .status-update {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        /* Define styles for images within status updates */
+        .status-update img {
+            max-width: 200%; /* Ensure images don't exceed the width of their container */
+            max-height: 100px; /* Set a maximum height for images, adjust as needed */
+            display: block; /* Remove any extra space below the image */
+            margin-right: auto; /* Align images to the right */
+            overflow: hidden; /* Hide any overflow beyond max-height */
+        }
