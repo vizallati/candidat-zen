@@ -1,3 +1,18 @@
+# Table of Contents
+
+- [Candidat Zen](#candidat-zen)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Cloning the Repository](#cloning-the-repository)
+    - [Setting Up a Virtual Environment (Linux)](#setting-up-a-virtual-environment-linux)
+    - [Setting Up a Virtual Environment (Windows)](#setting-up-a-virtual-environment-windows)
+    - [Installing Requirements](#installing-requirements)
+    - [Running the Application](#running-the-application)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+
 # Candidat Zen
 Optimize job hunting using Playwright automation. Apply on LinkedIn, Totaljobs, and Indeed effortlessly. Cut time and effort with streamlined applications. A practical project for job seekers and developers to harness automation. Revolutionize your job search with code.
 
