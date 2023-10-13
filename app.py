@@ -1,6 +1,6 @@
 import logging
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from scripts.totaljobs import Bot
 from loguru import logger
 
@@ -20,9 +20,23 @@ app.logger.handlers = [WerkzeugHandler()]  # adds handler to the werkzeug WSGI l
 logger.add("server.log", rotation="500 MB", level="INFO")
 
 
+@app.route('/image/<image_name>')
+def serve_image(image_name):
+    # Build the path to the image file
+    image_path = f'static/images/{image_name}'  # Assuming the images are in the 'static' folder
+
+    # Use send_file to send the image to the client
+    return send_file(image_path, as_attachment=True)
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 
 @app.route('/apply', methods=['POST'])

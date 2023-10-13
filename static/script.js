@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     runButton.addEventListener('click', async () => {
         resultDiv.innerText = 'Running...';
+        window.location.href = '/dashboard';
 
         try {
             const formData = new FormData(form);

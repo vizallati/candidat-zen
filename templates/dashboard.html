@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <h1>Job Application Dashboard</h1>
+    <div class="dashboard-container">
+        <!-- Status updates will be displayed here -->
+        <div class="status-update">
+            <h3>Job Application in Progress</h3>
+            <p>Status: Applying for Job A...</p>
+            <img src="/static/images/screenshot_jobA.png" alt="Screenshot of Job A">
+        </div>
+        <div class="status-update">
+            <h3>Job Application Complete</h3>
+            <p>Status: Application for Job A was successful!</p>
+            <img src="screenshot_jobA_success.png" alt="Screenshot of successful application for Job A">
+        </div>
+        <div class="status-update">
+            <h3>Job Application in Progress</h3>
+            <p>Status: Applying for Job B...</p>
+            <img src="screenshot_jobB.png" alt="Screenshot of Job B">
+        </div>
+    </div>
+    <!-- Include JavaScript for real-time updates (if using WebSocket or SSE) -->
+    <!-- <script src="your_realtime_update_script.js"></script> -->
+</body>
+</html>
